@@ -663,4 +663,14 @@ TEST(TestTime, TestCastTimestampToDate) {
   EXPECT_EQ(StringToTimestamp("2000-05-01 00:00:00"), out);
 }
 
+TEST(TestTime, TestConvertTimezone) {
+  ExecutionContext context;
+  uint64_t ctx_ptr = reinterpret_cast<gdv_int64>(&context);
+  gdv_timestamp ts = StringToTimestamp("2015-01-01 10:20:35");
+  gdv_timestamp out = convert_timezone_utf8_timestamp(ctx_ptr, "+01:00", 6, ts);
+  EXPECT_EQ(StringToTimestamp("2015-01-01 11:20:35"), out);
+  out = convert_timezone_utf8_timestamp(ctx_ptr, "-03:00", 6, ts);
+  EXPECT_EQ(StringToTimestamp("2015-01-01 07:20:35"), out);
+}
+
 }  // namespace gandiva

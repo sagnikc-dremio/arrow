@@ -706,6 +706,19 @@ gdv_date64 castDATE_timestamp(gdv_timestamp timestamp_in_millis) {
   return tp.ClearTimeOfDay().MillisSinceEpoch();
 }
 
+gdv_timestamp convert_timezone_utf8_timestamp(gdv_int64 context, const char* timezone,
+                                              gdv_int32 length, gdv_timestamp timestamp) {
+  bool is_ahead_gmt = (timezone[0] == '+');
+  gdv_int32 out_len1 = 0, out_len2 = 0;
+  const char *hrs = substr_utf8_int64_int64(context, timezone, length, 2, 2, &out_len1);
+  const char *mins = substr_utf8_int64_int64(context, timezone, length, 5, 2, &out_len2);
+  gdv_int32 hr = (hrs[0] - '0') * 10 + (hrs[1] - '0');
+  gdv_int32 min = (mins[0] - '0') * 10 + (mins[1] - '0');
+  gdv_int64 diff = (hr * 60 + min) * 60 * 1000L;
+  gdv_timestamp res = timestamp + (is_ahead_gmt ? 1 : -1) * diff;
+  return res;
+}
+
 const char* castVARCHAR_timestamp_int64(gdv_int64 context, gdv_timestamp in,
                                         gdv_int64 length, gdv_int32* out_len) {
   gdv_int64 year = extractYear_timestamp(in);

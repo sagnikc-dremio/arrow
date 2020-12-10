@@ -202,6 +202,9 @@ gdv_timestamp castTIMESTAMP_int64(gdv_int64);
 gdv_date64 castDATE_timestamp(gdv_timestamp);
 const char* castVARCHAR_timestamp_int64(int64_t, gdv_timestamp, gdv_int64, gdv_int32*);
 
+gdv_timestamp convert_timezone_utf8_timestamp(gdv_int64 context, const char* timezone,
+                                              gdv_int32 length, gdv_timestamp time);
+
 gdv_int64 truncate_int64_int32(gdv_int64 in, gdv_int32 out_scale);
 
 const char* substr_utf8_int64_int64(gdv_int64 context, const char* input,
