@@ -253,10 +253,10 @@ if(ARROW_S3)
   set(ARROW_WITH_ZLIB ON)
 endif()
 
-if(NOT ARROW_COMPUTE)
-  # utf8proc is only potentially used in kernels for now
-  set(ARROW_WITH_UTF8PROC OFF)
+if(ARROW_GANDIVA)
+  set(ARROW_WITH_UTF8PROC ON)
 endif()
+
 if((NOT ARROW_COMPUTE) AND (NOT ARROW_GANDIVA))
   set(ARROW_WITH_RE2 OFF)
 endif()
